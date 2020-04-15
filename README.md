@@ -1,6 +1,8 @@
 # MyCart 🛒
 A sample E-Commerce Command Line Interface app built with Kotlin and MySQL for data storage. 
 
+![Tests](https://github.com/PatilShreyas/MyCart-CLI/workflows/Tests/badge.svg?branch=master)
+
 ## How to setup? 🛠
 - Clone this repository.
 - Setup Database and Project
