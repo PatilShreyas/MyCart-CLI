@@ -1,13 +1,13 @@
-# MyCart 🛒
+# 🛒 MyCart 
 A sample E-Commerce Command Line Interface app built with Kotlin and MySQL for data storage. 
 
 ![Tests](https://github.com/PatilShreyas/MyCart-CLI/workflows/Tests/badge.svg?branch=master)
 
-## How to setup? 🛠
+## 🛠 How to setup? 
 - Clone this repository.
 - Setup Database and Project
 
-#### Database / MySQL Setup 🗄️
+#### 🗄️ Database / MySQL Setup
 - Open XAMPP control panel.
 - Start on **Apache** and **MySQL**
 - Open browser → Go to [`localhost/phpmyadmin`](http://localhost/phpmyadmin)
@@ -16,14 +16,24 @@ A sample E-Commerce Command Line Interface app built with Kotlin and MySQL for d
 - Click `Go`.
 Thus database setup is successful.
 
-#### Project Setup 💾
+#### 💾 Project Setup 
 - Open ***IntellJ Idea*** and *Import* this project.
 - Configure [`Config.kt`](src/main/kotlin/dev/shreyaspatil/mycart/Config.kt) file. Replace below fields with your confiurations.
   - `DATABASE_HOST` - Database Host Address
   - `DATABASE_USERNAME` - Username of your database
   - `DATABASE_PASSWORD` - Password of your database
   - `DATABASE_NAME` - Name of your database
-- Run ▶️ project with [`MyCart.kt`](src/main/kotlin/dev/shreyaspatil/mycart/MyCart.kt)
+- ▶️ Run project with [`MyCart.kt`](src/main/kotlin/dev/shreyaspatil/mycart/MyCart.kt)
+
+> ***When you'll run this application there you'll need to Login via user/admin account. Database already contains user accounts. You can login with below credentials***
+
+##### 🔑 Login Credentials 
+
+Account      | Username      | Password
+------------ | ------------- | -------------
+ADMIN        | `admin`       | `admin`
+USER 1       | `user1`       | `user1`
+USER 2       | `user2`       | `user2`
   
 ## Package Structure
 
