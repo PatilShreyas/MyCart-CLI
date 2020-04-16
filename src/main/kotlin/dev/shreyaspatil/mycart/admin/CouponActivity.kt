@@ -4,6 +4,7 @@ import dev.shreyaspatil.mycart.common.ShowCouponsActivity
 import dev.shreyaspatil.mycart.model.Coupon
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.repository.CouponRepository
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import dev.shreyaspatil.mycart.utils.isValidCouponCode
 import dev.shreyaspatil.mycart.utils.minus
 import java.sql.Date
@@ -13,11 +14,10 @@ import java.util.*
 class CouponActivity {
 
     private val scanner by lazy { Scanner(System.`in`) }
-    private val repository by lazy { CouponRepository() }
+    private val repository by lazy { CouponRepository(DatabaseUtils.getConnection()!!) }
 
     fun start() {
         showMainMenu()
-        scanner.close()
     }
 
     private fun showMainMenu() {

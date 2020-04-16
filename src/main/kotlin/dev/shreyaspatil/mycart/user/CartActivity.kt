@@ -4,6 +4,8 @@ import dev.shreyaspatil.mycart.model.*
 import dev.shreyaspatil.mycart.repository.CartRepository
 import dev.shreyaspatil.mycart.repository.CouponRepository
 import dev.shreyaspatil.mycart.repository.OrderRepository
+import dev.shreyaspatil.mycart.session.SessionManager
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import dev.shreyaspatil.mycart.utils.discountFromPercent
 import dev.shreyaspatil.mycart.utils.hoursDifference
 import java.sql.Timestamp
@@ -11,7 +13,9 @@ import java.util.*
 
 class CartActivity {
 
-    private val repository: CartRepository by lazy { CartRepository() }
+    private val connection = DatabaseUtils.getConnection()!!
+    private val user = SessionManager.currentUser!!
+    private val repository: CartRepository by lazy { CartRepository(connection, SessionManager.currentUser!!) }
     private val scanner = Scanner(System.`in`)
 
     fun start() {
@@ -111,7 +115,7 @@ class CartActivity {
             print("Coupon Code: ")
             val couponCode = scanner.next()
 
-            coupon = CouponRepository().getCouponByCode(couponCode)
+            coupon = CouponRepository(connection).getCouponByCode(couponCode)
 
             if (coupon == null) {
                 println("INVALID COUPON CODE!")
@@ -160,7 +164,7 @@ class CartActivity {
                 )
             )
 
-            OrderRepository().addOrder(order) { response ->
+            OrderRepository(connection, user).addOrder(order) { response ->
                 when (response) {
                     is Response.Success -> {
                         println(
@@ -205,7 +209,7 @@ class CartActivity {
 
         // Check if coupon is valid to use or not.
         if (coupon.startDate.time <= now && coupon.endDate.time >= now) {
-            val couponUsedTimestamp = OrderRepository().usedCouponTimestamp(coupon.couponCode)
+            val couponUsedTimestamp = OrderRepository(connection, user).usedCouponTimestamp(coupon.couponCode)
 
             // If timestamp list is empty, means it's not used by the user.
             if (couponUsedTimestamp.isEmpty()) {

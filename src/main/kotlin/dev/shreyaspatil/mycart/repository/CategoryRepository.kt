@@ -2,6 +2,7 @@ package dev.shreyaspatil.mycart.repository
 
 import dev.shreyaspatil.mycart.model.Category
 import dev.shreyaspatil.mycart.model.Response
+import java.sql.Connection
 
 interface AbstractCategoryRepository {
     fun addCategory(category: Category, callback: ((Response<*>) -> Unit)?)
@@ -11,7 +12,7 @@ interface AbstractCategoryRepository {
 /**
  * Repository of Different categories of products of MyCart
  */
-class CategoryRepository : BaseRepository(), AbstractCategoryRepository {
+class CategoryRepository(private val connection: Connection) : AbstractCategoryRepository {
 
     /**
      * Adds given [category] in the inventory of MyCart.

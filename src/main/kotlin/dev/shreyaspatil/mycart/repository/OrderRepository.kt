@@ -1,7 +1,7 @@
 package dev.shreyaspatil.mycart.repository
 
 import dev.shreyaspatil.mycart.model.*
-import dev.shreyaspatil.mycart.session.SessionManager
+import java.sql.Connection
 import java.sql.Timestamp
 
 interface AbstractOrderRepository {
@@ -13,27 +13,16 @@ interface AbstractOrderRepository {
 /**
  * Repository of order details of MyCart
  */
-class OrderRepository : BaseRepository(), AbstractOrderRepository {
-
-    private lateinit var user: User
-
-    init {
-        try {
-            user = SessionManager.currentUser!!
-        } catch (e: Exception) {
-        }
-    }
+class OrderRepository(
+    private val connection: Connection,
+    private val user: User
+) : AbstractOrderRepository {
 
     /**
      * Adds [order] into the MyCart
      * Gives back the result using [callback].
      */
     override fun addOrder(order: OrderDetails, callback: ((Response<*>) -> Unit)?) {
-
-        if (!this::user.isInitialized) {
-            callback?.invoke(Response.Error<String>("ACCESS DENIED! Login First!"))
-            return
-        }
 
         val query = """
             INSERT INTO ${OrderDetails.TABLE_NAME}(
@@ -153,7 +142,7 @@ class OrderRepository : BaseRepository(), AbstractOrderRepository {
     private fun getOrderItems(orderId: Int): MutableList<Item> {
         val items = mutableListOf<Item>()
 
-        val productsRepository = ProductsRepository()
+        val productsRepository = ProductsRepository(connection)
 
         val query = "SELECT * FROM ${OrderDetails.TABLE_ORDER_ITEMS} WHERE ${OrderDetails.COLUMN_ORDER_ID} = $orderId"
 

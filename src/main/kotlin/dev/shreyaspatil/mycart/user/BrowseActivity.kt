@@ -4,13 +4,15 @@ import dev.shreyaspatil.mycart.common.ShowCategoriesActivity
 import dev.shreyaspatil.mycart.common.ShowProductActivity
 import dev.shreyaspatil.mycart.repository.CategoryRepository
 import dev.shreyaspatil.mycart.repository.ProductsRepository
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import java.util.*
 
 class BrowseActivity {
 
+    private val connection = DatabaseUtils.getConnection()!!
     private val scanner by lazy { Scanner(System.`in`) }
-    private val productsRepository by lazy { ProductsRepository() }
-    private val categories by lazy { CategoryRepository().getAllCategories() }
+    private val productsRepository by lazy { ProductsRepository(connection) }
+    private val categories by lazy { CategoryRepository(connection).getAllCategories() }
 
     fun start() {
         showCategories()

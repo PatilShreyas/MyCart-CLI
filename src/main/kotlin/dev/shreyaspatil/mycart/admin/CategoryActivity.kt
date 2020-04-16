@@ -4,16 +4,16 @@ import dev.shreyaspatil.mycart.common.ShowCategoriesActivity
 import dev.shreyaspatil.mycart.model.Category
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.repository.CategoryRepository
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import java.util.*
 
 class CategoryActivity {
 
     private val scanner by lazy { Scanner(System.`in`) }
-    private val repository by lazy { CategoryRepository() }
+    private val repository by lazy { CategoryRepository(DatabaseUtils.getConnection()!!) }
 
     fun start() {
         showMainMenu()
-        scanner.close()
     }
 
     private fun showMainMenu() {

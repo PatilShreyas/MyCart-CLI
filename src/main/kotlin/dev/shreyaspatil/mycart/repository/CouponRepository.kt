@@ -3,6 +3,7 @@ package dev.shreyaspatil.mycart.repository
 import dev.shreyaspatil.mycart.model.Coupon
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.model.UsageType
+import java.sql.Connection
 import java.sql.SQLIntegrityConstraintViolationException
 
 interface AbstractCouponRepository {
@@ -14,7 +15,7 @@ interface AbstractCouponRepository {
 /**
  * Repository for Coupons or Offers of MyCart
  */
-class CouponRepository : BaseRepository(), AbstractCouponRepository {
+class CouponRepository(private val connection: Connection) : AbstractCouponRepository {
 
     /**
      * Adds [coupon] into the inventory of MyCart
