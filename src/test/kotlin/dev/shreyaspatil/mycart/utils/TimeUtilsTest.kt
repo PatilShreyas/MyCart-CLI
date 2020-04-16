@@ -1,7 +1,5 @@
-package dev.shreyaspatil.mycart
+package dev.shreyaspatil.mycart.utils
 
-import dev.shreyaspatil.mycart.utils.hoursDifference
-import dev.shreyaspatil.mycart.utils.minus
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
