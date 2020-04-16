@@ -6,17 +6,18 @@ import dev.shreyaspatil.mycart.model.Product
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.repository.CategoryRepository
 import dev.shreyaspatil.mycart.repository.ProductsRepository
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import java.util.*
 
 class ProductActivity {
 
+    private val connection = DatabaseUtils.getConnection()!!
     private val scanner by lazy { Scanner(System.`in`) }
-    private val categoryRepository by lazy { CategoryRepository() }
-    private val productRepository by lazy { ProductsRepository() }
+    private val categoryRepository by lazy { CategoryRepository(connection) }
+    private val productRepository by lazy { ProductsRepository(connection) }
 
     fun start() {
         showMainMenu()
-        scanner.close()
     }
 
     private fun showMainMenu() {

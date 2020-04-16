@@ -33,15 +33,4 @@ object DatabaseUtils {
             return connection
         }
     }
-
-    /**
-     * Closes the connection with database.
-     */
-    fun closeConnection() {
-        connection?.let {
-            if (!it.isClosed) {
-                it.close()
-            }
-        }
-    }
 }

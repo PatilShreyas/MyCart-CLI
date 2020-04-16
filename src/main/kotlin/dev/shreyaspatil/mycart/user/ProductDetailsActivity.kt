@@ -4,11 +4,18 @@ import dev.shreyaspatil.mycart.model.Item
 import dev.shreyaspatil.mycart.model.Product
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.repository.CartRepository
+import dev.shreyaspatil.mycart.session.SessionManager
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import java.util.*
 
 class ProductDetailsActivity(private val product: Product) {
 
-    private val cartRepository: CartRepository by lazy { CartRepository() }
+    private val cartRepository: CartRepository by lazy {
+        CartRepository(
+            DatabaseUtils.getConnection()!!,
+            SessionManager.currentUser!!
+        )
+    }
     private val scanner = Scanner(System.`in`)
 
     fun start() {

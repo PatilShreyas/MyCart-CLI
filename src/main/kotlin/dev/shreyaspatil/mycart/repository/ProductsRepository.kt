@@ -2,6 +2,7 @@ package dev.shreyaspatil.mycart.repository
 
 import dev.shreyaspatil.mycart.model.Product
 import dev.shreyaspatil.mycart.model.Response
+import java.sql.Connection
 import java.sql.ResultSet
 
 interface AbstractProductRepository {
@@ -14,12 +15,12 @@ interface AbstractProductRepository {
 /**
  * Repository of products of MyCart
  */
-class ProductsRepository : BaseRepository(), AbstractProductRepository {
+class ProductsRepository(private val connection: Connection) : AbstractProductRepository {
 
     /**
      * List of Categories
      */
-    private val categories by lazy { CategoryRepository().getAllCategories() }
+    private val categories by lazy { CategoryRepository(connection).getAllCategories() }
 
     /**
      * Adds a [product] into the inventory.

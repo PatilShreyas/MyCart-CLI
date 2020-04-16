@@ -19,7 +19,6 @@ class AdminActivity {
 
     fun start() {
         showMainMenu()
-        scanner.close()
     }
 
     private fun showMainMenu() {
@@ -35,7 +34,7 @@ class AdminActivity {
             
             1) Categories
             2) Products
-            3) Add Coupon
+            3) Coupons
             4) Sign Out
             
             Select Option: 

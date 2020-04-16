@@ -5,10 +5,12 @@ import dev.shreyaspatil.mycart.model.User
 import dev.shreyaspatil.mycart.repository.CouponRepository
 import dev.shreyaspatil.mycart.repository.OrderRepository
 import dev.shreyaspatil.mycart.session.SessionManager
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 import java.util.*
 
 class UserActivity {
 
+    private val connection = DatabaseUtils.getConnection()!!
     private lateinit var user: User
     private val scanner = Scanner(System.`in`)
 
@@ -63,12 +65,12 @@ class UserActivity {
     }
 
     private fun showOrders() {
-        val ordersRepository = OrderRepository()
+        val ordersRepository = OrderRepository(connection, user)
         OrdersActivity(ordersRepository.getOrderDetails()).start()
     }
 
     private fun showCoupons() {
-        val couponRepository = CouponRepository()
+        val couponRepository = CouponRepository(connection)
         ShowCouponsActivity().show(couponRepository.getAllCoupons())
     }
 }

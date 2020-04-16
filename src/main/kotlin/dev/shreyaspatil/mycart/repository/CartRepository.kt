@@ -4,7 +4,7 @@ import dev.shreyaspatil.mycart.model.Cart
 import dev.shreyaspatil.mycart.model.Item
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.model.User
-import dev.shreyaspatil.mycart.session.SessionManager
+import java.sql.Connection
 
 interface AbstractCartRepository {
     fun addItemToCart(item: Item, callback: ((Response<*>) -> Unit)?)
@@ -15,28 +15,16 @@ interface AbstractCartRepository {
 /**
  * Repository to keep track of cart of currently signed in user.
  */
-class CartRepository : BaseRepository(), AbstractCartRepository {
-
-    private lateinit var user: User
-
-    init {
-        try {
-            user = SessionManager.currentUser!!
-        } catch (e: Exception) {
-        }
-    }
+class CartRepository(
+    private val connection: Connection,
+    private val user: User
+) : AbstractCartRepository {
 
     /**
      * Adds [item] in the cart of currently signed in user.
      * Gives back result using [callback]
      */
     override fun addItemToCart(item: Item, callback: ((Response<*>) -> Unit)?) {
-
-        if (!this::user.isInitialized) {
-            callback?.invoke(Response.Error<String>("ACCESS DENIED! Login First!"))
-            return
-        }
-
         val query = """
             INSERT INTO ${Cart.TABLE_NAME}(
                 ${Cart.COLUMN_USER_ID}, 
@@ -73,21 +61,18 @@ class CartRepository : BaseRepository(), AbstractCartRepository {
     override fun getCart(): Cart? {
         var cart: Cart? = null
 
-        val productsRepository = ProductsRepository()
-
         val query = "SELECT * FROM ${Cart.TABLE_NAME} WHERE ${Cart.COLUMN_USER_ID} = '${user.uid}'"
+
+        val productsRepository = ProductsRepository(connection)
 
         connection.createStatement()?.let { statement ->
             val resultSet = statement.executeQuery(query)
-
             val cartItems = mutableListOf<Item>()
 
             while (resultSet.next()) {
                 val productId = resultSet.getInt(Item.COLUMN_PRODUCT_ID)
                 val quantity = resultSet.getInt(Item.COLUMN_QUANTITY)
-
                 val product = productsRepository.getProductById(productId)
-
                 cartItems.add(Item(product!!, quantity))
             }
 

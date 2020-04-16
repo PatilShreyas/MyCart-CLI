@@ -3,6 +3,7 @@ package dev.shreyaspatil.mycart.session
 import dev.shreyaspatil.mycart.model.Response
 import dev.shreyaspatil.mycart.model.User
 import dev.shreyaspatil.mycart.repository.UserRepository
+import dev.shreyaspatil.mycart.utils.DatabaseUtils
 
 /**
  * Session Manager to manage user presence in whole execution of the application.
@@ -11,7 +12,7 @@ object SessionManager : Session {
 
     private var mutableCurrentUser: User? = null
     private var mutableCurrentUserType: UserType? = null
-    private val userRepository = UserRepository()
+    private val userRepository = UserRepository(DatabaseUtils.getConnection()!!)
 
     /**
      * Current user will be the current signed in user.

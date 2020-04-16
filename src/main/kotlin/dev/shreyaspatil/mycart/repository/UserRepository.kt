@@ -2,6 +2,7 @@ package dev.shreyaspatil.mycart.repository
 
 import dev.shreyaspatil.mycart.model.User
 import dev.shreyaspatil.mycart.session.UserType
+import java.sql.Connection
 
 interface AbstractUserRepository {
     fun getUserByUsernameAndPassword(type: UserType, username: String, password: String): User?
@@ -10,7 +11,7 @@ interface AbstractUserRepository {
 /**
  * Users and Admin repository of MyCart
  */
-class UserRepository : BaseRepository(), AbstractUserRepository {
+class UserRepository(private val connection: Connection) : AbstractUserRepository {
 
     /**
      * Returns a user by specified [type], [username] and [password].

@@ -6,12 +6,13 @@ import dev.shreyaspatil.mycart.session.SessionManager
 import dev.shreyaspatil.mycart.session.UserType
 import dev.shreyaspatil.mycart.user.UserActivity
 import dev.shreyaspatil.mycart.utils.DatabaseUtils
+import java.sql.Connection
 import java.util.*
 
 /**
  * Main class of MyCart Application
  */
-class MyCart {
+class MyCart(private val connection: Connection) {
 
     private val scanner = Scanner(System.`in`)
 
@@ -25,7 +26,7 @@ class MyCart {
      */
     private fun cleanup() {
         scanner.close()
-        DatabaseUtils.closeConnection()
+        connection.close()
     }
 
     private fun showMainMenu() {
@@ -112,7 +113,7 @@ class MyCart {
                             """.trimIndent()
                             )
 
-                            when (type) {
+                            when (SessionManager.currentUserType) {
                                 UserType.USER -> UserActivity().start()
                                 UserType.ADMIN -> AdminActivity().start()
                             }
@@ -136,11 +137,10 @@ class MyCart {
 
 fun main() {
     // Start Application
-    MyCart().start()
+    try {
+        // Get Database connection instance.
+        MyCart(DatabaseUtils.getConnection()!!).start()
+    } catch (e: Exception) {
+        println("!!! Failed to connect with MyCart Database !!!")
+    }
 }
-
-
-
-
-
-
